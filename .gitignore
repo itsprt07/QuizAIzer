@@ -1,2 +1,13 @@
+# Ignore environment variables
+.env
 /server/.env
+/client/.env
 
+# Ignore node_modules everywhere
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
