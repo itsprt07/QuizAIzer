@@ -12,13 +12,11 @@ app.use(express.json());
 // ✅ Import Routes
 const authRoutes = require("./routes/auth");
 const quizRoutes = require("./routes/quiz");
-const geminiRoutes = require("./routes/gemini"); // ✅ Added Gemini route
 const cohereRoutes = require("./routes/cohere");
 
 // ✅ Use Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/quiz", quizRoutes);
-app.use("/api/gemini", geminiRoutes); // ✅ Mount Gemini route
 app.use("/api/cohere", cohereRoutes);
 
 // ✅ MongoDB Connection
