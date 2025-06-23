@@ -55,54 +55,50 @@
 
 ## 📁 Folder Structure
 
-```bash
 QuizAIzer/
-├── client/         # React frontend
-├── server/         # Express backend
-├── .env            # Environment variables (never push)
-├── .gitignore
-├── README.md
+├── client/         # React frontend  
+├── server/         # Express backend  
+├── .env            # Environment variables (never push)  
+├── .gitignore  
+├── README.md  
 
 ---
 
-# 🧑‍💻 Getting Started (Local Setup)
+## 🧑‍💻 Getting Started (Local Setup)
 
-## Clone the repository
-git clone https://github.com/itsprt07/QuizAIzer.git
+### 📥 Clone the repository
+git clone https://github.com/itsprt07/QuizAIzer.git  
 cd QuizAIzer
 
-## Install server dependencies
-cd server
+### 📦 Install server dependencies
+cd server  
 npm install
 
-## Install client dependencies
-cd ../client
+### 📦 Install client dependencies
+cd ../client  
 npm install
 
- ---
+---
 
-# ▶ Start Development Servers
+## ▶ Start Development Servers
 
-## Run Backend (from /server)
+### 🚀 Run Backend (from `/server`)
 npm start
 
-## Run Frontend (from /client)
+### 🚀 Run Frontend (from `/client`)
 npm start
 
---- 
+---
 
-# 📜 License
+## 📜 License
 
 This project is open-source and available under the MIT License.
 
-
 ---
 
-# 🙏 Acknowledgements
-Cohere AI
+## 🙏 Acknowledgements
 
-MongoDB Atlas
-
-react-simple-typewriter
-
-tsparticles
+- Cohere AI  
+- MongoDB Atlas  
+- react-simple-typewriter  
+- tsParticles
