@@ -1,0 +1,98 @@
+/* src/pages/CreateQuiz.css */
+
+body {
+  background-color: #0d0d0d; /* Entire app dark background */
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.create-quiz-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #121212;
+  color: #f0f0f0;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255, 0, 80, 0.3);
+  box-sizing: border-box;
+}
+
+.create-quiz-container h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #ff0055;
+  text-align: center;
+}
+
+/* Input styles */
+form input {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: none;
+  border-radius: 8px;
+  background-color: #1e1e1e;
+  color: #fff;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+form input::placeholder {
+  color: #888;
+}
+
+/* Question block */
+.question-block {
+  background-color: #1a1a1a;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #ff0055;
+  box-sizing: border-box;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.8rem 1.5rem;
+  margin-right: 1rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.3s ease;
+}
+
+.btn.add {
+  background-color: #444;
+}
+
+.btn.add:hover {
+  background-color: #555;
+}
+
+.btn.submit {
+  background-color: #ff0055;
+}
+
+.btn.submit:hover {
+  background-color: #ff3366;
+}
+
+/* ✅ Responsive Media Query */
+@media (max-width: 600px) {
+  .create-quiz-container {
+    margin: 1rem 1rem;
+    padding: 1.2rem;
+  }
+
+  .btn {
+    width: 100%;
+    margin: 0.5rem 0 0;
+  }
+
+  form input {
+    font-size: 0.95rem;
+  }
+}

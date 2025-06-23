@@ -1,0 +1,107 @@
+/* src/pages/AttemptQuiz.css */
+
+.attempt-quiz-bg {
+  background-color: #0f0f0f;
+  color: #fff;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: "Segoe UI", sans-serif;
+  box-sizing: border-box;
+}
+
+.attempt-quiz-container {
+  max-width: 800px;
+  margin: auto;
+  background: #1e1e1e;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #222;
+  box-sizing: border-box;
+}
+
+.question-block {
+  margin-bottom: 30px;
+}
+
+.option-label {
+  display: block;
+  background: #2c2c2c;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  word-wrap: break-word;
+}
+
+.option-label:hover {
+  background: #333;
+}
+
+input[type="radio"] {
+  margin-right: 12px;
+  transform: scale(1.2);
+}
+
+.correct {
+  color: #00ff99;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.wrong {
+  color: #ff4444;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.btn.submit {
+  background-color: #ff0055;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: 0.2s;
+}
+
+.btn.submit:hover {
+  background-color: #cc0044;
+}
+
+.score {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #00e676;
+  word-break: break-word;
+}
+
+/* ✅ Responsive Adjustments */
+@media (max-width: 600px) {
+  .attempt-quiz-container {
+    padding: 20px;
+    margin: 20px 10px;
+  }
+
+  .btn.submit {
+    width: 100%;
+    font-size: 15px;
+  }
+
+  .option-label {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  input[type="radio"] {
+    transform: scale(1.1);
+  }
+
+  .score {
+    font-size: 18px;
+    text-align: center;
+  }
+}
