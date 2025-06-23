@@ -63,6 +63,8 @@ QuizAIzer/
 ├── .gitignore
 ├── README.md
 
+---
+
 # 🧑‍💻 Getting Started (Local Setup)
 
 ## Clone the repository
@@ -77,7 +79,7 @@ npm install
 cd ../client
 npm install
 
-
+ ---
 
 # ▶ Start Development Servers
 
@@ -87,13 +89,14 @@ npm start
 ## Run Frontend (from /client)
 npm start
 
-
+--- 
 
 # 📜 License
 
 This project is open-source and available under the MIT License.
 
 
+---
 
 # 🙏 Acknowledgements
 Cohere AI
