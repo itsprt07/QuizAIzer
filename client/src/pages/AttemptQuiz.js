@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../api"; // ✅ Changed this import from 'axios' to 'API'
 import { useParams } from "react-router-dom";
 import "./AttemptQuiz.css";
 
@@ -15,9 +15,8 @@ const AttemptQuiz = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const res = await axios.get(
-          `https://quizaizer-backend.onrender.com/api/quiz/public/${id}`
-        );
+        // ✅ Use API.get with the relative path
+        const res = await API.get(`/quiz/public/${id}`);
         setQuiz(res.data.quiz);
         setError("");
       } catch (err) {
@@ -27,7 +26,6 @@ const AttemptQuiz = () => {
         setLoading(false);
       }
     };
-
     fetchQuiz();
   }, [id]);
 
@@ -48,10 +46,8 @@ const AttemptQuiz = () => {
 
     // Save anonymous attempt
     try {
-      await axios.post(
-        `https://quizaizer-backend.onrender.com/api/quiz/attempt/${id}`,
-        { score: sc }
-      );
+      // ✅ Use API.post with the relative path
+      await API.post(`/quiz/attempt/${id}`, { score: sc });
     } catch (err) {
       console.error("❌ Error saving attempt:", err);
     }
