@@ -33,26 +33,29 @@ const Dashboard = () => {
     navigate("/create");
   };
 
- const handleShare = (quizId) => {
-  const link = `${window.location.origin}/attempt/${quizId}`;
-  const shareData = {
-    title: "Check out this Quiz!",
-    text: "I found this awesome quiz. Give it a try!",
-    url: link,
+  const handleShare = (quizId) => {
+    const link = `${window.location.origin}/attempt/${quizId}`;
+    const shareData = {
+      title: "Check out this Quiz!",
+      text: "I found this awesome quiz. Give it a try!",
+      url: link,
+    };
+
+    if (navigator.share) {
+      navigator
+        .share(shareData)
+        .then(() => console.log("✅ Shared successfully"))
+        .catch((error) => console.error("❌ Sharing failed", error));
+    } else {
+      navigator.clipboard.writeText(link);
+      alert("🔗 Quiz link copied to clipboard!");
+    }
   };
 
-  if (navigator.share) {
-    navigator.share(shareData)
-      .then(() => console.log("✅ Shared successfully"))
-      .catch((error) => console.error("❌ Sharing failed", error));
-  } else {
-    navigator.clipboard.writeText(link);
-    alert("🔗 Quiz link copied to clipboard!");
-  }
-};
-
   const handleDelete = async (quizId) => {
-    const confirmDelete = window.confirm("⚠️ Are you sure you want to delete this quiz?");
+    const confirmDelete = window.confirm(
+      "⚠️ Are you sure you want to delete this quiz?"
+    );
     if (!confirmDelete) return;
 
     try {
@@ -101,9 +104,19 @@ const Dashboard = () => {
                 📊 {analytics[quiz._id]?.totalAttempts || 0} attempts | Avg:{" "}
                 {analytics[quiz._id]?.averageScore || 0}
               </p>
-              <button className="view-btn" onClick={() => navigate(`/quiz/${quiz._id}`)}>👁️ View</button>
-              <button className="share-btn" onClick={() => handleShare(quiz._id)}>📤 Share</button>
-              <button className="delete-btn" onClick={() => handleDelete(quiz._id)}>🗑️ Delete</button>
+              {/* UPDATED route here */}
+              <button
+                className="view-btn"
+                onClick={() => navigate(`/view-quiz/${quiz._id}`)}
+              >
+                👁️ View
+              </button>
+              <button className="share-btn" onClick={() => handleShare(quiz._id)}>
+                📤 Share
+              </button>
+              <button className="delete-btn" onClick={() => handleDelete(quiz._id)}>
+                🗑️ Delete
+              </button>
             </div>
           ))
         )}

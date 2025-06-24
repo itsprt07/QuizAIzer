@@ -10,40 +10,61 @@ import AttemptQuiz from "./pages/AttemptQuiz";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import GenerateQuiz from "./pages/GenerateQuiz";
 
-
 const App = () => {
   return (
     <Router>
       <Navbar />
       <Routes>
+        {/* Public routes */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
-        <Route path="/generate" element={<GenerateQuiz />} />
-
-        <Route path="/create" element={
-          <ProtectedRoute>
-            <CreateQuiz />
-          </ProtectedRoute>
-        } />
-        <Route path="/quiz/:id" element={
-          <ProtectedRoute>
-            <ViewQuiz />
-          </ProtectedRoute>
-        } />
-        <Route path="/quiz/:id/edit" element={
-  <ProtectedRoute>
-    <CreateQuiz />
-  </ProtectedRoute>
-} />
         
-        {/* 🟢 Publicly accessible route */}
-        <Route path="/attempt/:id" element={<AttemptQuiz />} />
+        {/* Public quiz attempt route */}
+        <Route path="/quiz/:id" element={<AttemptQuiz />} />
+        
+        {/* Protected routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/generate"
+          element={
+            <ProtectedRoute>
+              <GenerateQuiz />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create"
+          element={
+            <ProtectedRoute>
+              <CreateQuiz />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/view-quiz/:id"
+          element={
+            <ProtectedRoute>
+              <ViewQuiz />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/quiz/:id/edit"
+          element={
+            <ProtectedRoute>
+              <CreateQuiz />
+            </ProtectedRoute>
+          }
+        />
 
+        {/* Catch-all fallback */}
         <Route path="*" element={<Login />} />
       </Routes>
     </Router>
@@ -51,3 +72,4 @@ const App = () => {
 };
 
 export default App;
+

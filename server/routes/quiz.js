@@ -4,7 +4,7 @@ const router = express.Router();
 const Quiz = require("../models/Quiz");
 const Attempt = require("../models/Attempt");
 
-// ✅ Create quiz manually (protected route)
+// Create quiz manually (protected route)
 router.post("/create-manual", verifyToken, async (req, res) => {
   try {
     const { title, questions } = req.body;
@@ -24,7 +24,7 @@ router.post("/create-manual", verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Get all quizzes created by the logged-in user
+// Get all quizzes created by the logged-in user
 router.get("/my-quizzes", verifyToken, async (req, res) => {
   try {
     const quizzes = await Quiz.find({ user: req.user.id });
@@ -35,12 +35,17 @@ router.get("/my-quizzes", verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Get single quiz by ID (protected)
+// Get single quiz by ID (protected) with ownership check
 router.get("/:id", verifyToken, async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
     if (!quiz) {
       return res.status(404).json({ message: "Quiz not found" });
+    }
+
+    // Ownership check - only owner can view full quiz data
+    if (quiz.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Access denied" });
     }
 
     res.status(200).json({ quiz });
@@ -50,7 +55,7 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Public route to fetch quiz by ID (safe version)
+// Public route to fetch quiz by ID (safe version, no owner info, no correct answers exposure if you want)
 router.get("/public/:id", async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
@@ -58,7 +63,7 @@ router.get("/public/:id", async (req, res) => {
       return res.status(404).json({ message: "Quiz not found" });
     }
 
-    // ❌ Do not expose admin ID
+    // Send only necessary quiz info without sensitive data (like user ID)
     const { title, questions } = quiz;
     res.status(200).json({ quiz: { title, questions } });
   } catch (err) {
@@ -67,7 +72,7 @@ router.get("/public/:id", async (req, res) => {
   }
 });
 
-// ✅ Delete quiz by ID (protected)
+// Delete quiz by ID (protected)
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
@@ -88,7 +93,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Store anonymous quiz attempt (score only)
+// Store anonymous quiz attempt (score only)
 router.post("/attempt/:id", async (req, res) => {
   try {
     const { score } = req.body;
@@ -116,7 +121,7 @@ router.post("/attempt/:id", async (req, res) => {
   }
 });
 
-// ✅ Fetch basic quiz analytics
+// Fetch basic quiz analytics
 router.get("/analytics/:id", async (req, res) => {
   try {
     const quizExists = await Quiz.exists({ _id: req.params.id });
