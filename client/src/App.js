@@ -4,7 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -20,8 +20,8 @@ import GenerateQuiz from "./pages/GenerateQuiz";
 // ✅ Wrapper to optionally hide navbar on specific routes
 const AppRoutes = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ["/attempt"];
 
+  const hideNavbarRoutes = ["/attempt"];
   const shouldHideNavbar = hideNavbarRoutes.some((route) =>
     location.pathname.startsWith(route)
   );
@@ -34,8 +34,6 @@ const AppRoutes = () => {
         {/* ✅ Public routes */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-
-        {/* ✅ Public quiz access */}
         <Route path="/attempt/:id" element={<AttemptQuiz />} />
 
         {/* ✅ Protected routes */}
@@ -80,8 +78,8 @@ const AppRoutes = () => {
           }
         />
 
-        {/* ✅ Catch-all route */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        {/* ✅ Catch-all route safely redirects */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </>
   );
