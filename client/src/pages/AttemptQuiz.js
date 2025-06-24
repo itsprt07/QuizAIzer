@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./AttemptQuiz.css";
-import { getToken } from "../utils/auth";
 
 const AttemptQuiz = () => {
   const { id } = useParams();
@@ -16,9 +15,7 @@ const AttemptQuiz = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const token = getToken(); // May be null for public access
-        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-        const res = await axios.get(`http://localhost:5000/api/quiz/${id}`, config);
+        const res = await axios.get(`https://quizaizer-backend.onrender.com/api/quiz/public/${id}`);
         setQuiz(res.data.quiz);
       } catch (err) {
         console.error("Failed to fetch quiz:", err);
@@ -42,7 +39,7 @@ const AttemptQuiz = () => {
 
     // ✅ Save anonymous attempt score
     try {
-      await axios.post(`http://localhost:5000/api/quiz/attempt/${id}`, { score: sc });
+      await axios.post(`https://quizaizer-backend.onrender.com/api/quiz/attempt/${id}`, { score: sc });
     } catch (err) {
       console.error("❌ Error saving attempt:", err);
     }
@@ -87,3 +84,4 @@ const AttemptQuiz = () => {
 };
 
 export default AttemptQuiz;
+

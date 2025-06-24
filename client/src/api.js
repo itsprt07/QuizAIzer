@@ -1,9 +1,12 @@
 // src/api.js
 import axios from "axios";
 
-const API = axios.create({
-  baseURL: "https://quizaizer-backend.onrender.com/api",
-});
+const baseURL =
+  process.env.NODE_ENV === "production"
+    ? "https://quizaizer-backend.onrender.com/api"
+    : "http://localhost:5000/api";
+
+const API = axios.create({ baseURL });
 
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
