@@ -1,5 +1,3 @@
-// src/pages/AttemptQuiz.js
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -11,41 +9,65 @@ const AttemptQuiz = () => {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const res = await axios.get(`https://quizaizer-backend.onrender.com/api/quiz/public/${id}`);
+        const res = await axios.get(
+          `https://quizaizer-backend.onrender.com/api/quiz/public/${id}`
+        );
         setQuiz(res.data.quiz);
+        setError("");
       } catch (err) {
-        console.error("Failed to fetch quiz:", err);
+        console.error("❌ Failed to fetch quiz:", err);
+        setError("Quiz not found or inaccessible.");
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchQuiz();
   }, [id]);
 
   const handleOptionChange = (qIndex, option) => {
-    setAnswers({ ...answers, [qIndex]: option });
+    setAnswers((prev) => ({ ...prev, [qIndex]: option }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let sc = 0;
     quiz.questions.forEach((q, idx) => {
-      if (answers[idx] === q.correctAnswer) sc++;
+      if (answers[idx]?.trim() === q.correctAnswer?.trim()) {
+        sc++;
+      }
     });
     setScore(sc);
     setSubmitted(true);
 
-    // ✅ Save anonymous attempt score
+    // Save anonymous attempt
     try {
-      await axios.post(`https://quizaizer-backend.onrender.com/api/quiz/attempt/${id}`, { score: sc });
+      await axios.post(
+        `https://quizaizer-backend.onrender.com/api/quiz/attempt/${id}`,
+        { score: sc }
+      );
     } catch (err) {
       console.error("❌ Error saving attempt:", err);
     }
   };
 
-  if (!quiz) return <div className="attempt-quiz-bg">Loading quiz...</div>;
+  if (loading) {
+    return <div className="attempt-quiz-bg">⏳ Loading quiz...</div>;
+  }
+
+  if (error) {
+    return <div className="attempt-quiz-bg error">{error}</div>;
+  }
+
+  if (!quiz) {
+    return <div className="attempt-quiz-bg">❌ Quiz not found.</div>;
+  }
 
   return (
     <div className="attempt-quiz-bg">
@@ -69,14 +91,24 @@ const AttemptQuiz = () => {
                 </label>
               ))}
               {submitted && (
-                <p className={answers[i] === q.correctAnswer ? "correct" : "wrong"}>
-                  Correct Answer: {q.correctAnswer}
+                <p
+                  className={
+                    answers[i] === q.correctAnswer ? "correct" : "wrong"
+                  }
+                >
+                  ✅ Correct Answer: {q.correctAnswer}
                 </p>
               )}
             </div>
           ))}
-          {!submitted && <button type="submit" className="btn submit">🚀 Submit Quiz</button>}
-          {submitted && <div className="score">✅ You scored {score} / {quiz.questions.length}</div>}
+
+          {!submitted ? (
+            <button type="submit" className="btn submit">🚀 Submit Quiz</button>
+          ) : (
+            <div className="score">
+              🎯 You scored <strong>{score}</strong> out of {quiz.questions.length}
+            </div>
+          )}
         </form>
       </div>
     </div>
@@ -84,4 +116,3 @@ const AttemptQuiz = () => {
 };
 
 export default AttemptQuiz;
-

@@ -11,30 +11,38 @@ const Dashboard = () => {
   const fetchQuizzes = async () => {
     try {
       const res = await axios.get("/quiz/my-quizzes");
-      setQuizzes(res.data.quizzes);
+      const quizList = res.data.quizzes || [];
 
-      res.data.quizzes.forEach(async (quiz) => {
-        try {
-          const res2 = await axios.get(`/quiz/analytics/${quiz._id}`);
-          setAnalytics((prev) => ({
-            ...prev,
-            [quiz._id]: res2.data,
-          }));
-        } catch (err) {
-          console.error(`Error fetching analytics for quiz ${quiz._id}:`, err);
-        }
+      setQuizzes(quizList);
+
+      // ✅ Fetch analytics in parallel using Promise.all
+      const analyticsPromises = quizList.map((quiz) =>
+        axios
+          .get(`/quiz/analytics/${quiz._id}`)
+          .then((res2) => ({ id: quiz._id, data: res2.data }))
+          .catch((err) => {
+            console.error(`Error fetching analytics for quiz ${quiz._id}:`, err);
+            return null;
+          })
+      );
+
+      const results = await Promise.all(analyticsPromises);
+      const analyticsMap = {};
+
+      results.forEach((item) => {
+        if (item) analyticsMap[item.id] = item.data;
       });
+
+      setAnalytics(analyticsMap);
     } catch (err) {
-      console.error("❌ Error fetching quizzes", err);
+      console.error("❌ Error fetching quizzes:", err);
     }
   };
 
-  const handleCreateQuiz = () => {
-    navigate("/create");
-  };
+  const handleCreateQuiz = () => navigate("/create");
 
   const handleShare = (quizId) => {
-    const link = `${window.location.origin}/attempt/${quizId}`; // ✅ FIXED route
+    const link = `${window.location.origin}/attempt/${quizId}`;
     const shareData = {
       title: "Check out this Quiz!",
       text: "I found this awesome quiz. Give it a try!",
@@ -45,7 +53,7 @@ const Dashboard = () => {
       navigator
         .share(shareData)
         .then(() => console.log("✅ Shared successfully"))
-        .catch((error) => console.error("❌ Sharing failed", error));
+        .catch((error) => console.error("❌ Sharing failed:", error));
     } else {
       navigator.clipboard.writeText(link);
       alert("🔗 Quiz link copied to clipboard!");
@@ -53,17 +61,15 @@ const Dashboard = () => {
   };
 
   const handleDelete = async (quizId) => {
-    const confirmDelete = window.confirm(
-      "⚠️ Are you sure you want to delete this quiz?"
-    );
+    const confirmDelete = window.confirm("⚠️ Are you sure you want to delete this quiz?");
     if (!confirmDelete) return;
 
     try {
       await axios.delete(`/quiz/${quizId}`);
       alert("🗑️ Quiz deleted successfully!");
-      fetchQuizzes();
+      fetchQuizzes(); // Refresh
     } catch (err) {
-      console.error("Failed to delete quiz:", err);
+      console.error("❌ Failed to delete quiz:", err);
       alert("❌ Failed to delete quiz");
     }
   };
@@ -102,7 +108,7 @@ const Dashboard = () => {
               <p>🧩 {quiz.questions.length} questions</p>
               <p>
                 📊 {analytics[quiz._id]?.totalAttempts || 0} attempts | Avg:{" "}
-                {analytics[quiz._id]?.averageScore || 0}
+                {analytics[quiz._id]?.averageScore?.toFixed(1) || 0}
               </p>
               <button
                 className="view-btn"

@@ -1,13 +1,19 @@
 // src/utils/ProtectedRoute.js
 
 import React from "react";
-import { Navigate } from "react-router-dom";
-import { isAuthenticated } from "./auth"; // This should check for token
+import { Navigate, useLocation } from "react-router-dom";
+import { isAuthenticated } from "./auth";
 
 const ProtectedRoute = ({ children }) => {
-  const isAuth = isAuthenticated(); // Should return true if token is present
+  const location = useLocation();
+  const isAuth = isAuthenticated();
 
-  return isAuth ? children : <Navigate to="/login" replace />;
+  // Redirect to login and preserve the current location for redirect after login
+  if (!isAuth) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  return children;
 };
 
 export default ProtectedRoute;

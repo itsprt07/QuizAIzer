@@ -8,18 +8,16 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
-    window.location.reload(); // ensures full logout effect
+    navigate("/login", { replace: true });
   };
 
-  // ✅ If current route is a public quiz attempt, hide auth buttons
-  const isAttemptRoute = location.pathname.startsWith("/attempt/");
+  // ✅ Hide navbar on public quiz route
+  const isAttemptRoute = location.pathname.toLowerCase().startsWith("/attempt/");
 
   return (
     <nav style={styles.nav}>
       <h2 style={styles.logo}>QuizAIzer</h2>
 
-      {/* 🔒 Hide these buttons on /attempt/:id route */}
       {!isAttemptRoute && (
         <div style={styles.links}>
           {isAuthenticated() ? (
@@ -58,7 +56,8 @@ const styles = {
   },
   link: {
     color: "white",
-    textDecoration: "none"
+    textDecoration: "none",
+    cursor: "pointer"
   },
   button: {
     background: "#ff4d4f",

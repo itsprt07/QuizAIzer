@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { getToken } from "../utils/auth";
+import axios from "../api"; // ✅ Use configured axios
 import "./ViewQuiz.css";
 
 const ViewQuiz = () => {
@@ -13,12 +12,7 @@ const ViewQuiz = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const token = getToken();
-        const res = await axios.get(`http://localhost:5000/api/quiz/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axios.get(`/quiz/${id}`); // ✅ baseURL + /quiz/:id
         setQuiz(res.data.quiz);
         setError(null);
       } catch (error) {

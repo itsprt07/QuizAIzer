@@ -1,7 +1,7 @@
 // src/pages/GenerateQuiz.js
 
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../api"; // ✅ Fixed: use custom axios instance
 
 const GenerateQuiz = () => {
   const [paragraph, setParagraph] = useState("");
@@ -22,9 +22,9 @@ const GenerateQuiz = () => {
     setFollowupActive(false);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/cohere/generate", {
+      const res = await axios.post("/cohere/generate", {
         paragraph,
-        isFollowUp: false, // Initial request
+        isFollowUp: false,
       });
 
       const response = res.data.data || "No quiz generated";
@@ -50,9 +50,9 @@ const GenerateQuiz = () => {
     setFollowupActive(false);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/cohere/generate", {
+      const res = await axios.post("/cohere/generate", {
         paragraph,
-        isFollowUp: true, // Follow-up request
+        isFollowUp: true,
       });
 
       const response = res.data.data || "No further response";

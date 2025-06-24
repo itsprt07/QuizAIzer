@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -10,16 +10,25 @@ import AttemptQuiz from "./pages/AttemptQuiz";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import GenerateQuiz from "./pages/GenerateQuiz";
 
-const App = () => {
+// ✅ Wrapper to optionally hide navbar on specific routes
+const AppRoutes = () => {
+  const location = useLocation();
+  const hideNavbarRoutes = ["/attempt"]; // Hide on public quiz link
+
+  const shouldHideNavbar = hideNavbarRoutes.some((route) =>
+    location.pathname.startsWith(route)
+  );
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      {!shouldHideNavbar && <Navbar />}
+
       <Routes>
         {/* ✅ Public routes */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
-        {/* ✅ Public route to attempt quizzes via shared links */}
+        {/* ✅ Public quiz access */}
         <Route path="/attempt/:id" element={<AttemptQuiz />} />
 
         {/* ✅ Protected routes */}
@@ -64,9 +73,17 @@ const App = () => {
           }
         />
 
-        {/* Catch-all fallback */}
+        {/* 🚨 Catch-all route */}
         <Route path="*" element={<Login />} />
       </Routes>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <AppRoutes />
     </Router>
   );
 };
