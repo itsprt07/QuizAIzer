@@ -1,5 +1,3 @@
-// src/pages/ViewQuiz.js
-
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -9,6 +7,8 @@ import "./ViewQuiz.css";
 const ViewQuiz = () => {
   const { id } = useParams();
   const [quiz, setQuiz] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -20,17 +20,21 @@ const ViewQuiz = () => {
           },
         });
         setQuiz(res.data.quiz);
+        setError(null);
       } catch (error) {
         console.error("❌ Error fetching quiz:", error);
+        setError("Failed to load quiz. You might not have permission.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchQuiz();
   }, [id]);
 
-  if (!quiz) {
-    return <div className="loading">⏳ Loading quiz...</div>;
-  }
+  if (loading) return <div className="loading">⏳ Loading quiz...</div>;
+  if (error) return <div className="error">{error}</div>;
+  if (!quiz) return <div className="error">Quiz not found.</div>;
 
   return (
     <div className="view-quiz-container">
