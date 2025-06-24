@@ -107,12 +107,12 @@ const Dashboard = () => {
               <h3>{quiz.title}</h3>
               <p>🧩 {quiz.questions.length} questions</p>
               <p>
-             📊 {analytics[quiz._id]?.totalAttempts || 0} attempts | Avg:{" "}
-{typeof analytics[quiz._id]?.averageScore === "number"
-  ? analytics[quiz._id].averageScore.toFixed(1)
-  : "0.0"}
+  📊 {analytics[quiz._id]?.totalAttempts || 0} attempts | Avg:{" "}
+  {typeof analytics[quiz._id]?.averageScore === "number"
+    ? analytics[quiz._id].averageScore.toFixed(1)
+    : "0.0"}
+</p>
 
-              </p>
               <button
                 className="view-btn"
                 onClick={() => navigate(`/view-quiz/${quiz._id}`)}

@@ -1,7 +1,8 @@
+// models/Attempt.js
 const mongoose = require("mongoose");
 
 const attemptSchema = new mongoose.Schema({
-  quizId: {
+  quiz: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Quiz",
     required: true,
@@ -17,3 +18,4 @@ const attemptSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Attempt", attemptSchema);
+
