@@ -18,10 +18,10 @@ const App = () => {
         {/* Public routes */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        
+
         {/* Public quiz attempt route */}
-        <Route path="/quiz/:id" element={<AttemptQuiz />} />
-        
+        <Route path="/attempt/:id" element={<AttemptQuiz />} />
+
         {/* Protected routes */}
         <Route
           path="/dashboard"
@@ -48,7 +48,7 @@ const App = () => {
           }
         />
         <Route
-          path="/view-quiz/:id"
+          path="/quiz/:id"
           element={
             <ProtectedRoute>
               <ViewQuiz />
@@ -64,7 +64,7 @@ const App = () => {
           }
         />
 
-        {/* Catch-all fallback */}
+        {/* Fallback */}
         <Route path="*" element={<Login />} />
       </Routes>
     </Router>
@@ -72,4 +72,3 @@ const App = () => {
 };
 
 export default App;
-
