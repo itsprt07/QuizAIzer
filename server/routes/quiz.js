@@ -1,4 +1,3 @@
-// routes/quiz.js
 const express = require("express");
 const { verifyToken } = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -51,14 +50,17 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Public route to fetch quiz by ID (for /attempt/:id)
+// ✅ Public route to fetch quiz by ID (safe version)
 router.get("/public/:id", async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
     if (!quiz) {
       return res.status(404).json({ message: "Quiz not found" });
     }
-    res.status(200).json({ quiz });
+
+    // ❌ Do not expose admin ID
+    const { title, questions } = quiz;
+    res.status(200).json({ quiz: { title, questions } });
   } catch (err) {
     console.error("❌ Public Quiz Fetch Error:", err);
     res.status(500).json({ message: "Server error" });
