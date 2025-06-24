@@ -6,7 +6,16 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// ✅ Explicit CORS Configuration
+const corsOptions = {
+    origin: 'https://quiz-aizer.vercel.app', // ✅ YOUR VERCEl FRONTEND DOMAIN
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow these methods
+    credentials: true, // Allow cookies, authorization headers, etc.
+    optionsSuccessStatus: 204 // For preflight requests
+};
+app.use(cors(corsOptions)); // ✅ Use CORS with explicit options
+
 app.use(express.json());
 
 // ✅ Import Routes
@@ -27,7 +36,7 @@ mongoose
 
 // ✅ Basic API Test
 app.get("/", (req, res) => {
-  res.send("🚀 QuizForge Backend is Live!");
+  res.send("🚀 QuizForge Backend is Live with Explicit CORS!");
 });
 
 // ✅ Start Server
