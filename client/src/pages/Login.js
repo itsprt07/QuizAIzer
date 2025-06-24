@@ -1,14 +1,12 @@
 // src/pages/Login.js
 
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../api"; // ✅ USE YOUR BASE API CONFIG
 import { useNavigate } from "react-router-dom";
 import { saveToken } from "../utils/auth";
 import { Typewriter } from "react-simple-typewriter";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
-
-
 import "./Login.css";
 
 const Login = () => {
@@ -20,7 +18,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post("/auth/login", {
         email,
         password,
       });
@@ -41,7 +39,6 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* 🌌 Particles Background */}
       <Particles
         id="tsparticles"
         className="particles-bg"
@@ -70,7 +67,6 @@ const Login = () => {
         }}
       />
 
-      {/* 🔐 Login Form */}
       <form onSubmit={handleSubmit} className="login-card animate-slide-in">
         <h2>
           <span>
