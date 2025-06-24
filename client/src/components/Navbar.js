@@ -8,6 +8,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     navigate("/login");
+    window.location.reload(); // ensures full logout effect
   };
 
   return (

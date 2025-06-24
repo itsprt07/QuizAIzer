@@ -56,7 +56,7 @@ const App = () => {
           }
         />
         <Route
-          path="/attempt/:id/edit"
+          path="/quiz/:id/edit"
           element={
             <ProtectedRoute>
               <CreateQuiz />

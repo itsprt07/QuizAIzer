@@ -34,7 +34,7 @@ const Dashboard = () => {
   };
 
   const handleShare = (quizId) => {
-    const link = `${window.location.origin}/attempt/${quizId}`;
+    const link = `${window.location.origin}/attempt/${quizId}`; // ✅ FIXED route
     const shareData = {
       title: "Check out this Quiz!",
       text: "I found this awesome quiz. Give it a try!",
@@ -104,7 +104,6 @@ const Dashboard = () => {
                 📊 {analytics[quiz._id]?.totalAttempts || 0} attempts | Avg:{" "}
                 {analytics[quiz._id]?.averageScore || 0}
               </p>
-              {/* UPDATED route here */}
               <button
                 className="view-btn"
                 onClick={() => navigate(`/view-quiz/${quiz._id}`)}
