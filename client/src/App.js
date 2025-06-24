@@ -15,14 +15,14 @@ const App = () => {
     <Router>
       <Navbar />
       <Routes>
-        {/* Public routes */}
+        {/* ✅ Public routes */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
-        {/* Public quiz attempt route */}
+        {/* ✅ Public route to attempt quizzes via shared links */}
         <Route path="/attempt/:id" element={<AttemptQuiz />} />
 
-        {/* Protected routes */}
+        {/* ✅ Protected routes */}
         <Route
           path="/dashboard"
           element={
@@ -48,7 +48,7 @@ const App = () => {
           }
         />
         <Route
-          path="/quiz/:id"
+          path="/view-quiz/:id"
           element={
             <ProtectedRoute>
               <ViewQuiz />
@@ -64,7 +64,7 @@ const App = () => {
           }
         />
 
-        {/* Fallback */}
+        {/* Catch-all fallback */}
         <Route path="*" element={<Login />} />
       </Routes>
     </Router>

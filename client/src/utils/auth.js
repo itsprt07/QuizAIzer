@@ -1,9 +1,11 @@
+// src/utils/auth.js
+
 // Save JWT token to localStorage
 export const saveToken = (token) => {
   localStorage.setItem("token", token);
 };
 
-// Get JWT token from localStorage
+// Retrieve JWT token from localStorage
 export const getToken = () => {
   return localStorage.getItem("token");
 };
@@ -13,12 +15,13 @@ export const removeToken = () => {
   localStorage.removeItem("token");
 };
 
-// Check if user is authenticated
+// Check if the user is authenticated
 export const isAuthenticated = () => {
-  return !!getToken(); // returns true if token exists
+  const token = getToken();
+  return Boolean(token); // clearer than !!
 };
 
-// Logout user
+// Log out user
 export const logout = () => {
   removeToken();
 };
