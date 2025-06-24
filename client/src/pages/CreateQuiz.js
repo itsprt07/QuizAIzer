@@ -39,7 +39,7 @@ const CreateQuiz = () => {
       });
 
       alert("✅ Quiz created successfully!");
-      navigate(`/quiz/${res.data.quiz._id}`);
+      navigate(`/view-quiz/${res.data.quiz._id}`);
     } catch (err) {
       console.error(err);
       alert("❌ Failed to create quiz");
