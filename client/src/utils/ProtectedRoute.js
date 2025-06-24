@@ -1,19 +1,35 @@
 // src/utils/ProtectedRoute.js
-
-import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { isAuthenticated } from "./auth";
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { getToken, removeToken } from "./auth";
+import axios from "../api"; // <-- use your axios instance
 
 const ProtectedRoute = ({ children }) => {
-  const location = useLocation();
-  const isAuth = isAuthenticated();
+  const [isValid, setIsValid] = useState(null);
 
-  // Redirect to login and preserve the current location for redirect after login
-  if (!isAuth) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
-  }
+  useEffect(() => {
+    const validate = async () => {
+      const token = getToken();
+      if (!token) return setIsValid(false);
 
-  return children;
+      try {
+        await axios.get("/auth/validate-token", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setIsValid(true);
+      } catch (err) {
+        console.error("❌ Invalid token, logging out");
+        removeToken();
+        setIsValid(false);
+      }
+    };
+
+    validate();
+  }, []);
+
+  if (isValid === null) return <div>🔄 Loading...</div>; // avoid flicker or crash
+
+  return isValid ? children : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

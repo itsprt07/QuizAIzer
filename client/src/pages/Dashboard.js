@@ -106,12 +106,13 @@ const Dashboard = () => {
             <div className="quiz-card" key={quiz._id}>
               <h3>{quiz.title}</h3>
               <p>🧩 {quiz.questions.length} questions</p>
-              <p>
+ <p>
   📊 {analytics[quiz._id]?.totalAttempts || 0} attempts | Avg:{" "}
   {typeof analytics[quiz._id]?.averageScore === "number"
     ? analytics[quiz._id].averageScore.toFixed(1)
     : "0.0"}
 </p>
+
 
               <button
                 className="view-btn"

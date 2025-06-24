@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { validateToken, removeToken } from './utils/auth';
+console.log("🔥 React App Loaded");
+
 
 // Wrapper component to validate token before rendering app
 const AppInitializer = () => {
