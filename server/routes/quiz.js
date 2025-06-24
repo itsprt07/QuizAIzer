@@ -50,7 +50,7 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Public quiz fetch (without correct answers)
+// ✅ Public quiz fetch (safe)
 router.get("/public/:id", async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
@@ -81,7 +81,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Save quiz attempt
+// ✅ Save quiz attempt (correct schema use)
 router.post("/attempt/:id", async (req, res) => {
   try {
     const { score } = req.body;
@@ -94,7 +94,7 @@ router.post("/attempt/:id", async (req, res) => {
     if (!quizExists) return res.status(404).json({ message: "Quiz not found" });
 
     const attempt = new Attempt({
-      quiz: quizId, // ✅ Fix here: not quizId, it's quiz
+      quiz: quizId, // ✅ correct field, matches schema
       score,
     });
 
@@ -106,7 +106,7 @@ router.post("/attempt/:id", async (req, res) => {
   }
 });
 
-// ✅ Analytics
+// ✅ Analytics route (avg score + total attempts)
 router.get("/analytics/:id", async (req, res) => {
   try {
     const quizExists = await Quiz.exists({ _id: req.params.id });
@@ -115,11 +115,13 @@ router.get("/analytics/:id", async (req, res) => {
     const attempts = await Attempt.find({ quiz: req.params.id });
 
     const totalAttempts = attempts.length;
-    const averageScore = totalAttempts
-      ? attempts.reduce((acc, a) => acc + a.score, 0) / totalAttempts
-      : 0;
+    const totalScore = attempts.reduce((sum, a) => sum + a.score, 0);
+    const averageScore = totalAttempts ? totalScore / totalAttempts : 0;
 
-    res.status(200).json({ totalAttempts, averageScore });
+    res.status(200).json({
+      totalAttempts,
+      averageScore: Number(averageScore.toFixed(2)), // ✅ send as number
+    });
   } catch (err) {
     console.error("❌ Analytics Fetch Error:", err);
     res.status(500).json({ message: "Server error" });

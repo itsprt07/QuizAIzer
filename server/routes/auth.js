@@ -3,8 +3,9 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { verifyToken } = require("../middleware/authMiddleware");
 
-// REGISTER
+// ✅ REGISTER
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -23,11 +24,12 @@ router.post("/register", async (req, res) => {
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
+    console.error("❌ Registration error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// LOGIN
+// ✅ LOGIN
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -57,8 +59,14 @@ router.post("/login", async (req, res) => {
       },
     });
   } catch (err) {
+    console.error("❌ Login error:", err);
     res.status(500).json({ message: "Server error" });
   }
+});
+
+// ✅ TOKEN VALIDATION ROUTE
+router.get("/validate-token", verifyToken, (req, res) => {
+  return res.status(200).json({ valid: true });
 });
 
 module.exports = router;

@@ -5,11 +5,11 @@ const attemptSchema = new mongoose.Schema({
   quiz: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Quiz",
-    required: true,
+    required: true, // ✅ Correct field name
   },
   score: {
     type: Number,
-    required: true,
+    required: true, // ✅ Score must be a number
   },
   attemptedAt: {
     type: Date,
@@ -18,4 +18,3 @@ const attemptSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Attempt", attemptSchema);
-

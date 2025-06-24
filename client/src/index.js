@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-// import reportWebVitals from './reportWebVitals';
+import { validateToken, removeToken } from './utils/auth';
+
+// Wrapper component to validate token before rendering app
+const AppInitializer = () => {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const isValid = await validateToken();
+      if (!isValid) {
+        removeToken(); // Clear invalid token
+        window.location.href = "/login"; // Force redirect
+      } else {
+        setReady(true);
+      }
+    };
+
+    checkToken();
+  }, []);
+
+  return ready ? <App /> : <div style={{ textAlign: "center", paddingTop: "2rem" }}>Checking session...</div>;
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AppInitializer />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();
